@@ -1,0 +1,45 @@
+{
+	"groups": [
+		{
+			"keys": "mcdata_json,mcdata_png,number_fnt,woman1_jpg,woman2_jpg,woman3_jpg,ivoryandebony_png",
+			"name": "res"
+		}
+	],
+	"resources": [
+		{
+			"url": "gameres/mcdata.json",
+			"type": "json",
+			"name": "mcdata_json"
+		},
+		{
+			"url": "gameres/mcdata.png",
+			"type": "image",
+			"name": "mcdata_png"
+		},
+		{
+			"url": "gameres/number.fnt",
+			"type": "font",
+			"name": "number_fnt"
+		},
+		{
+			"url": "gameres/woman1.jpg",
+			"type": "image",
+			"name": "woman1_jpg"
+		},
+		{
+			"url": "gameres/woman2.jpg",
+			"type": "image",
+			"name": "woman2_jpg"
+		},
+		{
+			"url": "gameres/woman3.jpg",
+			"type": "image",
+			"name": "woman3_jpg"
+		},
+		{
+			"url": "gameres/ivoryandebony.png",
+			"type": "image",
+			"name": "ivoryandebony_png"
+		}
+	]
+}
