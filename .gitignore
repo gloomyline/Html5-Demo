@@ -1,1 +1,6 @@
 /.gitignore
+/IvoryAndEbonyKeys/libs/*
+/IvoryAndEbonyKeys/resource/*
+/IvoryAndEbonyKeys/.wing/*
+/IvoryAndEbonyKeys/wingProperties.json
+
