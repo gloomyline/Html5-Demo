@@ -1,6 +1,8 @@
-/.gitignore
+# IvoryAndEbonyKeys
 /IvoryAndEbonyKeys/libs/*
 /IvoryAndEbonyKeys/resource/*
 /IvoryAndEbonyKeys/.wing/*
 /IvoryAndEbonyKeys/wingProperties.json
 
+# kanban-app
+kanban-app/
