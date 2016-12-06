@@ -1,0 +1,11 @@
+# dependent files
+node_modules/
+
+build/
+coverage/
+.eslintcache
+
+# logger
+*.log
+log/
+
