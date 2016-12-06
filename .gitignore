@@ -6,3 +6,6 @@
 
 # kanban-app
 kanban-app/node_modules/
+
+# log
+*.log
