@@ -1,82 +1,131 @@
 import React from 'react';
 import uuid from 'uuid';
-import Notes from './Notes';
+// import Notes from './Notes';
 
-export default class App extends React.Component{
-	constructor(props){
-		super(props);
+import {compose} from 'redux';
+import {DragDropContext} from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
-		this.state = {
-			notes: [
-				{
-					id: uuid.v4(),
-					task: 'Learn React'
-				},
-				{
-					id: uuid.v4(),
-					task: 'Do laundry'
-				}
-			]
-		};
-	}
+import connect from '../libs/connect';
+// import NoteActions from '../actions/NoteActions';
+import Lanes from './Lanes';
+import LaneActions from '../actions/LaneActions';
 
-	render(){
-		const {notes} = this.state;
+// class App extends React.Component {
+//   // constructor(props) {
+//   //   super(props);
 
-		return (
-			<div>
-				<button className="add-note" onClick={this.addNote}>Add</button>
-				<Notes 
-					notes={notes}
-					onNoteClick={this.activateNoteEdit}
-					onEdit={this.editNote}
-					onDelete={this.deleteNote} />
-			</div>
-		);
-	}
+//   //   this.state = {
+//   //     notes: [
+//   //       {
+//   //         id: uuid.v4(),
+//   //         task: 'Learn React'
+//   //       },
+//   //       {
+//   //         id: uuid.v4(),
+//   //         task: 'Do laundry'
+//   //       }
+//   //     ]
+//   //   }
+//   // }
 
-	addNote = (event) => {
-		console.log('add note', event.target);
-		this.setState({
-			notes: this.state.notes.concat([{
-				id: uuid.v4(),
-				task: 'New task'
-			}])
-		});
-	}
+//   render() {
+//     // const {notes} = this.state;
+//     const {notes} = this.props;
 
-	deleteNote = (id, event) => {
-		console.log('del note', event.target)
-		event.stopPropagation();
+//     return (
+//       <div>
+//         <button className="add-note" onClick={this.addNote}>+</button>
+//         <Notes
+//           notes={notes}
+//           onNoteClick={this.activateNoteEdit}
+//           onEdit={this.editNote}
+//           onDelete={this.deleteNote}
+//           />
+//       </div>
+//     );
+//   }
 
-		this.setState({
-			notes: this.state.notes.filter(note => note.id !== id)
-		});
-	}
+//   addNote = () => {
+//     this.props.NoteActions.create({
+//       id: uuid.v4(),
+//       task: 'New task'
+//     });
+//   }
 
-	activateNoteEdit = (id) => {
-		this.setState({
-			notes: this.state.notes.map(note => {
-				if (note.id === id) {
-					note.editing = true;
-				}
+//   deleteNote = (id, e) => {
+//     // Avoid bubbling to edit
+//     e.stopPropagation();
 
-				return note;
-			})
-		});
-	}
+//     // this.setState({
+//     //   notes: this.state.notes.filter(note => note.id !== id)
+//     // });
+//     this.props.NoteActions.delete(id);
+//   }
 
-	editNote = (id, task) => {
-		this.setState({
-			notes: this.state.notes.map(note => {
-				if (note.id === id) {
-					note.editing = false;
-					note.task = task;
-				}
+//   activateNoteEdit = (id) => {
+//     // this.setState({
+//     //   notes: this.state.notes.map(note => {
+//     //     if(note.id === id) {
+//     //       note.editing = true;
+//     //     }
 
-				return note;
-			})
-		});
-	}
+//     //     return note;
+//     //   })
+//     // });
+//     this.props.NoteActions.update({id, editing: true});
+//   }
+
+//   editNote = (id, task) => {
+//     // this.setState({
+//     //   notes: this.state.notes.map(note => {
+//     //     if(note.id === id) {
+//     //       note.editing = false;
+//     //       note.task = task;
+//     //     }
+
+//     //     return note;
+//     //   })
+//     // });
+//     const {NoteActions} = this.props;
+
+//     NoteActions.update({id, task, editing: false});
+//   }
+
+// }
+
+// // export default connect(() => ({
+// //   test: 'test'
+// // }))(App)
+// // export default connect(({notes}) => ({
+// //   notes
+// // }))(App)
+// export default connect(({notes}) => ({
+//   notes
+// }), {
+//   NoteActions
+// })(App)
+
+const App = ({LaneActions, lanes}) => {
+  const addLane = () => {
+    LaneActions.create({
+      id: uuid.v4(),
+      name: 'New lane'
+    });
+  };
+
+  return (
+    <div>
+      <button className="add-lane" onClick={addLane}>+</button>
+      <Lanes lanes={lanes} />
+    </div>
+  );
 }
-	
+
+export default compose(
+  DragDropContext(HTML5Backend),
+  connect(
+    ({lanes}) => ({lanes}),
+    {LaneActions}
+  )
+)(App)
