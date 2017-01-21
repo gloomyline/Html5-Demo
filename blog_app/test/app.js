@@ -10,7 +10,8 @@ var users = require('./routes/users');
 var app = express();
 
 // view engine setup
-
+app.set('views', path.join(__dirname, 'views'));	// 设置存放模板文件的目录
+app.set('view engine', 'ejs');						// 设置模板引擎为 ejs
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -22,9 +23,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
+// error handle
+app.use('/', (err, req, res, next) => {
+	console.error(err.stack)
+	res.status(500).send('Something Broken!')
+})
+
 app.listen(8888, (res, req) => {
-	console.dir(res)
-	console.dir(req)
 	console.log('The server is running')
 })
 

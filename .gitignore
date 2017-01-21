@@ -8,7 +8,8 @@
 kanban-app/node_modules/
 
 # blog_app
-blog_app/node_modules/
+blog_app/test/node_modules/
+blog_app/app/node_modules/
 
 # log
 *.log
