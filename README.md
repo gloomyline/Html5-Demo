@@ -7,4 +7,8 @@ several interesting Demos of html5
 	- written by TS
 
 2. kanban-app
-	- a started app based on React
+	- a started app based on React 
+
+3. blog_app
+    - an blog system app powered by nodejs
+    - practice and review of node
