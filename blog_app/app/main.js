@@ -2,7 +2,7 @@
 * @Author: Administrator
 * @Date:   2017-01-21 13:35:50
 * @Last Modified by:   gloomyline
-* @Last Modified time: 2017-01-21 16:03:46
+* @Last Modified time: 2017-01-21 17:29:02
 */
 
 'use strict';
@@ -20,7 +20,7 @@ var app = express()
 
 // engine template setup
 app.set('views', path.join(__dirname, 'views'))
-app.set('views engine', 'ejs')
+app.set('view engine', 'ejs')
 
 // set static directory
 app.use(express.static(path.join(__dirname, 'public')))
@@ -39,6 +39,20 @@ app.use(session({
 
 // flash middleware to display notices
 app.use(flash())
+
+// set global constant of template
+app.locals.blog = {
+	title: pkg.name,
+	description: pkg.description
+}
+
+// add needed variables of template
+app.use((req, res, next) => {
+	res.locals.user = req.session.user
+	res.locals.success = req.flash('success').toString()
+	res.locals.error = req.flash('error').toString()
+	next()
+})
 
 // routes
 routes(app)
