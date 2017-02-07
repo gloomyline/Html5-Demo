@@ -2,35 +2,103 @@
 * @Author: gloomyline
 * @Date:   2017-01-21 15:20:36
 * @Last Modified by:   gloomyline
-* @Last Modified time: 2017-01-21 15:36:48
+* @Last Modified time: 2017-02-07 14:18:53
 */
 
 'use strict';
 
 var express = require('express')
 var router = express.Router()
+var PostModel = require('../models/posts')
 
 var checkLogin = require('../middlewares/check').checkLogin
+var realeaseTip = require('../config/tips').RELEASE
 
 // GET /posts 所有用户或者特定用户的文章页
 //   eg: GET /posts?author=xxx
 router.get('/', (req, res, next) => {
-	res.send(req.flash())
+	// res.send(req.flash())
+	var author = req.query.author
+
+	PostModel.getPosts(author)
+		.then((posts) => {
+			console.log(posts);
+			res.render('posts', {
+				posts: posts
+			})
+			console.log('111111');		
+		})
+		.catch(next)
+
+	// res.render('posts')
 })
 
 // POST /posts 发表一篇文章
 router.post('/', checkLogin, (req, res, next) => {
-	res.send(req.flash())
+	// res.send(req.flash())
+	var author = req.session.user._id
+	var title = req.fields.title
+	var content = req.fields.content
+
+	// 校验参数
+	try {
+		if (!title.length){
+			throw new Error(realeaseTip.TITLEEMPTY)
+		}
+		if (!content.length){
+			throw new Error(realeaseTip.CONTENTEMPTY)
+		}
+	}
+	catch(e) {
+		req.flash('error', e.message)
+		return res.redirect('back')
+	}
+
+	var post = {
+		author: author,
+		title: title,
+		content: content,
+		pv: 0
+	}
+
+	PostModel.create(post)
+		.then((result) => {
+			// 这里的 post 是插入 mongodb 后的值，包含_id
+			post = result.ops[0]
+			req.flash('success', realeaseTip.SUCCESS)
+
+			// 发表成功后跳转到文章首页
+			res.redirect(`/posts/${post._id}`)
+			// res.redirect('/posts')
+		})
+		.catch(next)
 })
 
 // GET /posts/create 发表文章页
 router.get('/create', checkLogin, (req, res, next) => {
-	res.send(req.flash())
+	// res.send(req.flash())
+	res.render('create')
 })
 
 // GET /posts/:postId 单独一篇文章页
 router.get('/:postId', (req,res,next) => {
-	res.send(req.flash())
+	// res.send(req.flash())
+	var postId = req.params.postId
+	Promise.all([
+		PostModel.getPostById(postId),	// 获取文章信息
+		PostModel.incPv(postId)			// pv 加 1
+	])
+	.then((result) => {
+		var post = result[0]
+		if (!!!post) {
+			throw new Error('该文章不存在')
+		}
+
+		res.render('post', {
+			post: post
+		})
+	})
+	.catch(next)
 })
 
 // GET /posts/:postId/edit 更新文章页

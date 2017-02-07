@@ -2,7 +2,7 @@
 * @Author: Administrator
 * @Date:   2017-01-21 13:35:50
 * @Last Modified by:   gloomyline
-* @Last Modified time: 2017-01-21 17:29:02
+* @Last Modified time: 2017-02-05 11:25:29
 */
 
 'use strict';
@@ -39,6 +39,12 @@ app.use(session({
 
 // flash middleware to display notices
 app.use(flash())
+
+// middleware for handling the form and uploaded files
+app.use(require('express-formidable')({
+	uploadDir: path.join(__dirname, 'public/img'), //directory for uploading
+	keepExtensions: true 						   //remain the extensions of files
+}))
 
 // set global constant of template
 app.locals.blog = {
