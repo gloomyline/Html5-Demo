@@ -1,8 +1,8 @@
 /*
 * @Author: gloomyline
 * @Date:   2017-02-07 11:51:49
-* @Last Modified by:   gloomyline
-* @Last Modified time: 2017-02-07 13:57:20
+* @Last Modified by:   Administrator
+* @Last Modified time: 2017-02-07 16:38:43
 */
 
 'use strict';
@@ -61,6 +61,28 @@ module.exports = {
 	incPv: function invPv(postId) {
 		return Post
 			.update({_id: postId}, {$inc: {pv: 1}})
+			.exec()
+	},
+
+	// 通过文章 id 获取一篇原生文章 (编辑文章)
+	getRawPostById: function getRawPostById(postId) {
+		return Post
+			.findOne({_id: postId})
+			.populate({path: 'author', model: 'User'})
+			.exec()
+	},
+
+	// 通过用户 id 和文章 id 更新一篇文章
+	updatePostById: function updatePostById(postId, author, data) {
+		return Post
+			.update({author: author,_id: postId},{$set: data})
+			.exec()
+	},
+
+	// 通过用户 id 和文章 id 删除一篇文章
+	delPostById: function delPostById(postId, author) {
+		return Post
+			.remove({author: author, _id: postId})
 			.exec()
 	}
 }
