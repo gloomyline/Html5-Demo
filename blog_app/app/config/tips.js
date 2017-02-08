@@ -1,8 +1,8 @@
 /*
 * @Author: gloomyline
 * @Date:   2017-02-05 11:36:50
-* @Last Modified by:   Administrator
-* @Last Modified time: 2017-02-07 16:55:26
+* @Last Modified by:   Alan
+* @Last Modified time: 2017-02-08 21:27:45
 */
 
 'use strict';
@@ -23,14 +23,16 @@ module.exports = {
 		NICKNAMENOTEXIST: '用户名不存在',
 		PASSWORDERROR: '用户名或密码错误',
 		SIGNINSUCCESS: '登录成功',
-		DELETEBLOGSUCCESS: '删除文章成功'
+		DELETEBLOGSUCCESS: '删除文章成功',
+		DELETEMARKSUCCESS: '删除留言成功'
 	},
 	RELEASE: {
 		SUCCESS: '发表成功',
 		FAILED: '发表失败',
 		TITLEEMPTY: '请填写标题',
 		CONTENTEMPTY: '请填写内容',
-		EDITSUCCESS: '编辑成功'
+		EDITSUCCESS: '编辑成功',
+		MARKSUCCESS: '留言成功'
 	},
 	REVIEW: {
 		NOTEXIST: '该文章不存在',

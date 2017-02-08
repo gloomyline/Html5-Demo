@@ -10,6 +10,7 @@ kanban-app/node_modules/
 # blog_app
 blog_app/test/node_modules/
 blog_app/app/node_modules/
+blog_app/app/public/img/
 
 # log
 *.log

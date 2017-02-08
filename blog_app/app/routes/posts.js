@@ -1,8 +1,8 @@
 /*
 * @Author: gloomyline
 * @Date:   2017-01-21 15:20:36
-* @Last Modified by:   Administrator
-* @Last Modified time: 2017-02-07 16:56:30
+* @Last Modified by:   Alan
+* @Last Modified time: 2017-02-08 21:30:27
 */
 
 'use strict';
@@ -10,6 +10,7 @@
 var express = require('express')
 var router = express.Router()
 var PostModel = require('../models/posts')
+var CommentModel = require('/models/comments')
 
 var checkLogin = require('../middlewares/check').checkLogin
 var releaseTip = require('../config/tips').RELEASE
@@ -152,12 +153,36 @@ router.post('/:postId/remove', checkLogin, (req, res, next) => {
 
 // POST /posts/:postId/comment 创建一条留言
 router.post('/:postId/comment', checkLogin, (req, res, next) => {
-	res.send(req.flash())
+	// res.send(req.flash())
+	var postId = req.params.postId
+	var author = req.session.user._id
+	var content = req.fields.content
+	var comment = {
+		author: author,
+		postId: postId,
+		content: content
+	}
+
+	CommentModel.create(comment)
+		.then(() => {
+			res.flash('success', releaseTip.MARKSUCCESS)
+			res.redirect('back')
+		})
+		.catch(next)
 })
 
 // POST /posts/:postId/:commentId/remove 删除一条留言
 router.post('/:postId/comment/:commentId/remove', checkLogin, (req, res, next) => {
-	res.send(req.flash())
+	// res.send(req.flash())
+	var commentId = req.params.commentId
+	var author = req.session.user._id
+
+	CommentModel.delCommentById(commentId, author)
+		.then(() => {
+			req.flash('success', operateTip.DELETEMARKSUCCESS)
+			res.redirect('back')
+		})
+		.catch(next)
 }) 
 
 module.exports = router
